@@ -1,47 +1,34 @@
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, FlatList} from 'react-native'
 import {AntDesign} from '@expo/vector-icons';
 import { useState } from 'react';
 
 import restaurants from '../../../assets/data/restaurants.json'
-const dish = restaurants[0].dishes[0];
+import BasketDishItem from '../../components/BasketDishItem';
+const restaurant = restaurants[0];
 
-const DishDetailsScreen = () => {
 
-  const [quantity, setQuantity] = useState(1);
 
-  const onMinus = () => {
-    if (quantity >1){
-        setQuantity(quantity -1);
-    }
- 
-  }
+const Basket = () => {
 
-  const onPlus = () => {
-        setQuantity(quantity+1);
-  }
 
-  const getTotal = () => {
-    return (dish.price * quantity).toFixed(2);
-  }
+
+
 
     return(
         <View style={styles.page}>
             <Text style={styles.name}>
-                {dish.name}
+          {restaurant.name}
             </Text>
-            <Text style={styles.description}>
-                {dish.description}
-            </Text>
+
+            <Text style={{fontWeight: "bold", marginTop: 20, fontSize:19}}>Your Items</Text>
+
+         <FlatList data={restaurant.dishes} renderItem={({item})=> <BasketDishItem basketDish={item} />} />
+        
             <View style={styles.separator}/>
-            <View style={styles.row}>
-                <AntDesign name='minuscircleo' size={60} color={"black"} onPress={onMinus}/>
-                <Text style={styles.quantity}>{quantity}</Text>
-           
-           <AntDesign name='pluscircleo' size={60} color={"black"} onPress={onPlus}/>
-            </View>
+        
 
             <View style={styles.button}>
-                <Text style={styles.buttonText}> Add {quantity} to basket &#8226; $ {getTotal()}</Text>
+                <Text style={styles.buttonText}> Create Order</Text>
             </View>
            
           
@@ -56,7 +43,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     name: {
-        fontSize: 30,
+        fontSize: 24,
         fontWeight: "600",
         marginVertical: 10,
     },
@@ -71,8 +58,8 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center",
-        marginTop: 50,
+        
+        marginVertical: 15,
     },
     quantity: {
         fontSize: 25,
@@ -88,7 +75,15 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'white',
         fontWeight: "600"
+    },
+    quantityContainer: {
+        backgroundColor: 'lightgray',
+        paddingHorizontal: 5,
+        paddingVertical: 2,
+        marginRight: 10,
+        borderRadius: 3,
+
     }
 
 })
-export default DishDetailsScreen;
+export default Basket;
